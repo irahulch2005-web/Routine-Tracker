@@ -8,18 +8,27 @@ const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','
 const DAY_NAMES_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 const HABITS_DEF = [
-  {id:'wake',       name:'Wake up',                 target:'8:00 AM',              icon:'◐', category:'sleep'},
-  {id:'pushups',    name:'Push-ups + skipping',     target:'10 min · min 10 min',  icon:'✛', category:'health'},
-  {id:'college',    name:'College',                 target:'attend',               icon:'▣', category:'academics', collegeOnly:true},
-  {id:'study',      name:'Semester study',          target:'daily',                icon:'▤', category:'academics'},
-  {id:'coding',     name:'Coding',                  target:'4x/wk · min 20 min',   icon:'◧', category:'coding'},
-  {id:'genAlpha',   name:'Gen Alpha',                target:'3x/wk · min 10 min',  icon:'●', category:'content'},
-  {id:'memestiano', name:'Memestiano',               target:'2x/wk · min 10 min',  icon:'■', category:'content'},
-  {id:'gym',        name:'Gym',                      target:'7x/wk · min 10 min',  icon:'▲', category:'health'},
-  {id:'steps',      name:'5,000 steps',              target:'daily',               icon:'◈', category:'health'},
-  {id:'reading',    name:'Reading',                  target:'daily · min 1 page',  icon:'▥', category:'reading'},
-  {id:'sleep',      name:'Sleep ~12:00 AM',          target:'consistency',         icon:'☾', category:'sleep'},
+  {id:'wake',       name:'Wake up',                 target:'8:00 AM',              icon:'⏰', category:'sleep'},
+  {id:'pushups',    name:'Push-ups + skipping',     target:'10 min · min 10 min',  icon:'💪', category:'health'},
+  {id:'college',    name:'College',                 target:'attend',               icon:'🎓', category:'academics', collegeOnly:true},
+  {id:'study',      name:'Semester study',          target:'daily',                icon:'📖', category:'academics'},
+  {id:'coding',     name:'Coding',                  target:'4x/wk · min 20 min',   icon:'💻', category:'coding'},
+  {id:'genAlpha',   name:'Gen Alpha',                target:'3x/wk · min 10 min',  icon:'🎯', category:'content'},
+  {id:'memestiano', name:'Memestiano',               target:'2x/wk · min 10 min',  icon:'😂', category:'content'},
+  {id:'gym',        name:'Gym',                      target:'7x/wk · min 10 min',  icon:'🏋️', category:'health'},
+  {id:'steps',      name:'5,000 steps',              target:'daily',               icon:'👣', category:'health'},
+  {id:'reading',    name:'Reading',                  target:'daily · min 1 page',  icon:'📚', category:'reading'},
+  {id:'sleep',      name:'Sleep ~12:00 AM',          target:'consistency',         icon:'🌙', category:'sleep'},
 ];
+
+const CATEGORY_COLOR = {
+  health:'var(--cat-health)', academics:'var(--cat-academics)', coding:'var(--cat-coding)',
+  content:'var(--cat-content)', reading:'var(--cat-reading)', sleep:'var(--cat-sleep)'
+};
+const CATEGORY_COLOR_DIM = {
+  health:'var(--cat-health-dim)', academics:'var(--cat-academics-dim)', coding:'var(--cat-coding-dim)',
+  content:'var(--cat-content-dim)', reading:'var(--cat-reading-dim)', sleep:'var(--cat-sleep-dim)'
+};
 
 const STATUS_ORDER = ['complete','minimum','partial','skipped'];
 const STATUS_LABEL = {complete:'Done', minimum:'Min', partial:'Partial', skipped:'Skip'};
@@ -384,6 +393,8 @@ function renderHabitGrid(){
   habits.forEach(h=>{
     const card = document.createElement('div');
     card.className = 'habit-card';
+    card.style.setProperty('--cat-color', CATEGORY_COLOR[h.category]);
+    card.style.setProperty('--cat-color-dim', CATEGORY_COLOR_DIM[h.category]);
     const st = day.habits[h.id] ? day.habits[h.id].status : null;
     if(st) card.dataset.status = st;
     if(st) doneWeight += (STATUS_POINTS[st]/100);
@@ -968,7 +979,7 @@ function renderSidePanels(){
       const row = document.createElement('div');
       row.className = 'score-bar-row';
       row.innerHTML = `<div class="score-bar-label">${CATEGORY_LABEL[cat]}</div>
-        <div class="score-bar-track"><div class="score-bar-fill" style="width:${Math.round(cats[cat])}%"></div></div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:${Math.round(cats[cat])}%; background:${CATEGORY_COLOR[cat]}"></div></div>
         <div class="score-bar-pct">${Math.round(cats[cat])}%</div>`;
       barsEl.appendChild(row);
     });
